@@ -1,19 +1,22 @@
+// Streaming Availability API Keys - 100 uses/day, rotate when running low
+
 var streamingKara = "9bc319ba34mshdb0c70c64984539p15f5efjsn8aa923a6ee36";
 var streamingGiovanna = "87d84436d1mshb6b0d209ecb39b5p1ec3d4jsn7e6c7183a483";
 var streamingDaniel = "343b570cfbmsh84ada70a77fa889p16e201jsn1f05562634fe";
 var streamingTroy = "b1f2194ce2msh8465b3fd1005b7ap1448f4jsn54d8bc2cedb5";
 
+// OMDB Poster API key
 var omdbKara = "d1d04aa6";
 
+// Declaring Variables
+
 var searchBar;
+
+// Assigning IDs to variables
 
 var service = document.querySelector("#provider").value;
 
 var movieCard = $("#movieInfoResults");
-
-// Assigning IDs to variables
-
-// let movieResult = $('#movie-result');
 
 let searchTitle = $("#searchBar");
 
@@ -40,32 +43,25 @@ function getInfo(title, synopsis) {
 
   let movieSynopsis = $("<p>").addClass("movie-synopsis").text(synopsis);
 
-  //   let movieImg = $('<img>').addClass('card-img').attr("src", poster);
-
-  //   movieSummary.append(movieImg);
-  //   movieSummary.append(movieSynopsis);
-  //   movieTitle.append(movieSummary);
   movieInfo.append(movieTitle).append(movieSynopsis);
   cardContainer.append(movieInfo);
   movieCard.append(cardContainer);
-  //   movieResult.appendTo(movieCard);
-
-
-    
 }
 
-// $(document).ready(function () {
+// Fetching API data on click - both API's will populate the information onto webpage
+
 $("#searchBtn").click(function (event) {
   event.preventDefault();
   searchBar = $("#searchBar").val();
   console.log(searchBar);
-  
- // Setting up LocalStorage within function
+
+  // Setting up LocalStorage within function
+
   localStorage.setItem("movie", searchBar);
   let myMovie = localStorage.getItem("movie");
-  
-  console.log(myMovie)
+  console.log(myMovie);
 
+  // ajax call to Streaming Availability API
   $.ajax({
     async: true,
     crossDomain: true,
@@ -84,32 +80,28 @@ $("#searchBtn").click(function (event) {
   }).done(function (response) {
     var searchResults = JSON.parse(response);
 
-    // This section needs work!!!  I essentially am trying to get a modal to pop up if no title is found
+    // Modal will pop up if movie title is not found or undefined
     if (searchResults.results[0].title === undefined)
-    function custom_alert( message, title ) {
-      
-          title = 'Alert';
-    
-      if ( !message )
-          message = 'No Message to Display.';
-    
-      $('<div></div>').html( message ).dialog({
-          title: title,
-          resizable: false,
-          modal: true,
-          buttons: {
-              'Ok': function()  {
-                  $( this ).dialog( 'close' );
-              }
-          }
-      });
-    }
+      function custom_alert(message, title) {
+        title = "Alert";
+        if (!message) message = "No Message to Display.";
+        $("<div></div>")
+          .html(message)
+          .dialog({
+            title: title,
+            resizable: false,
+            modal: true,
+            buttons: {
+              Ok: function () {
+                $(this).dialog("close");
+              },
+            },
+          });
+      }
 
-    
     console.log(searchResults.results[0].title);
     console.log(searchResults);
     getInfo(searchResults.results[0].title, searchResults.results[0].overview);
-
   });
 
   $.ajax({
@@ -122,23 +114,18 @@ $("#searchBtn").click(function (event) {
     $("#moviePoster").attr("src", response.Poster);
   });
 });
-// });
-
-// Figure out LocalStorage
-
-// Modal alerts
-
 
 // Creating local storage movie options within Footer
 
 //  store value from text area to local storage
-$(".saveBtn").on("click" , function(){
-    var text = $(this).siblings("textarea").val()
-    console.log(text)
-    var rank = $(this).siblings("textarea").attr("id")
-    localStorage.setItem(rank, text)
-})
+
+$(".saveBtn").on("click", function () {
+  var text = $(this).siblings("textarea").val();
+  console.log(text);
+  var rank = $(this).siblings("textarea").attr("id");
+  localStorage.setItem(rank, text);
+});
 // get item from storage to page after refreshing
-$("#option1").val(localStorage.getItem(option1))
-$("#option2").val(localStorage.getItem(option2))
-$("#option3").val(localStorage.getItem(option3))
+$("#option1").val(localStorage.getItem(option1));
+$("#option2").val(localStorage.getItem(option2));
+$("#option3").val(localStorage.getItem(option3));
